@@ -1,12 +1,12 @@
 import { Controller, Get } from '@nestjs/common';
-import { CatalogService } from './catalog.service';
+import { CatalogService, CatalogType } from './catalog.service';
 
 @Controller()
 export class CatalogController {
   constructor(private readonly catalogService: CatalogService) {}
 
   @Get('/catalog')
-  getHello(): string {
+  getHello(): CatalogType[] {
     return this.catalogService.getCatalog();
   }
 }

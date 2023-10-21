@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { User, users } from './user.static';
+import { UserType, getUser } from './user.static';
 
 @Injectable()
 export class UserService {
-  getUser(): User {
-    return users.find((user) => user.id === '1');
+  getUser(): UserType {
+    const user = getUser();
+    return user;
   }
 }

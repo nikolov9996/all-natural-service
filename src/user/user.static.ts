@@ -1,13 +1,17 @@
-export interface User {
-  email: string;
-  username: string;
-  id: string;
-}
+import { faker } from '@faker-js/faker';
 
-export const users: User[] = [
-  {
-    username: 'Alfonso',
-    email: 'alfonso@example.com',
-    id: '1',
-  },
-];
+export type UserType = {
+  username: string;
+  email: string;
+  avatar: string;
+  isSeller: boolean;
+};
+
+export function getUser(): UserType {
+  return <UserType>{
+    username: faker.person.fullName(),
+    email: faker.internet.email(),
+    avatar: faker.internet.avatar(),
+    isSeller: !!faker.number.int({ min: 0, max: 1 }),
+  };
+}
