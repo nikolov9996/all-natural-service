@@ -1,10 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { UserType, getUser } from './user.static';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { IUser } from './user.interface';
+import { CreateUserDto } from './create-user.dto';
 
 @Injectable()
 export class UserService {
-  getUser(): UserType {
-    const user = getUser();
-    return user;
+  constructor(@InjectModel('User') private userModel: Model<IUser>) {}
+
+  async createUser(createUserDto: CreateUserDto): Promise<IUser> {
+    const newStudent = await new this.userModel(createUserDto);
+    return newStudent.save();
   }
 }
