@@ -43,7 +43,7 @@ export class UserController {
         return response.status(HttpStatus.NOT_FOUND).json({
           statusCode: 404,
           message: 'Error: User not found!',
-          error: 'Bad Request',
+          error: 'Not Found',
         });
       }
 
