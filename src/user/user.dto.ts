@@ -1,6 +1,6 @@
+import { PartialType } from '@nestjs/mapped-types';
 import {
   IsNotEmpty,
-  IsNumber,
   IsString,
   MaxLength,
   IsBoolean,
@@ -29,3 +29,5 @@ export class CreateUserDto {
   @MaxLength(60)
   readonly password: string;
 }
+
+export class UpdateUserDto extends PartialType(CreateUserDto) {}
