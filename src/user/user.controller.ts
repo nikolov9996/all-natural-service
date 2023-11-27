@@ -9,12 +9,13 @@ import {
   Put,
   NotFoundException,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto, UpdateUserDto } from './user.dto';
 import { ObjectId } from 'mongoose';
 
-@Controller('user')
+@Controller()
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -34,7 +35,18 @@ export class UserController {
     }
   }
 
-  @Get('/:id')
+  @Get()
+  async getManyUsers(@Res() response, @Query('count') count: number) {
+    if (!count) {
+      count = 10;
+    }
+    const users = await this.userService.getManyUsers(count);
+    return response.status(HttpStatus.OK).json({
+      Users: users,
+    });
+  }
+
+  @Get(':id')
   async getUser(@Res() response, @Param('id') userId: ObjectId) {
     try {
       const user = await this.userService.getUser(userId);

@@ -11,7 +11,7 @@ import { ProductService } from './product.service';
 import { CreateProductDto } from './product.dto';
 import { ObjectId } from 'mongoose';
 
-@Controller('product')
+@Controller()
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 

@@ -13,7 +13,10 @@ export class ProductService {
   }
 
   async getProduct(productId: ObjectId) {
-    const product = await this.productModel.findById(productId).exec();
+    const product = await this.productModel
+      .findById(productId)
+      .populate('creator')
+      .exec();
     return product;
   }
 }

@@ -1,5 +1,6 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument, ObjectId } from 'mongoose';
+import mongoose, { HydratedDocument, ObjectId } from 'mongoose';
+import { User } from 'src/user/user.schema';
 
 export type UserDocument = HydratedDocument<Product>;
 
@@ -17,8 +18,8 @@ export class Product {
   @Prop()
   photos: string[];
 
-  @Prop({ type: String })
-  creator: ObjectId;
+  @Prop([{ type: mongoose.Schema.Types.ObjectId, ref: User.name }])
+  creator: User;
 
   @Prop()
   certificates: string[];

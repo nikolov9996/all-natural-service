@@ -5,12 +5,12 @@ import { CatalogService, CatalogType } from './catalog.service';
 export class CatalogController {
   constructor(private readonly catalogService: CatalogService) {}
 
-  @Get('/catalog')
+  @Get()
   getCatalog(): CatalogType[] {
     return this.catalogService.getCatalog();
   }
 
-  @Post('/catalog')
+  @Post()
   addCatalogItem(@Body() params: CatalogType) {
     console.log(params);
   }
