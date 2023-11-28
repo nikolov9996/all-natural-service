@@ -19,4 +19,18 @@ export class ProductService {
       .exec();
     return product;
   }
+
+  async getManyProducts(count: number) {
+    const products = await this.productModel
+      .find({})
+      .limit(count)
+      .populate('creator')
+      .exec();
+    return products;
+  }
+
+  async deleteProduct(id: ObjectId) {
+    const isDeleted = await this.productModel.findByIdAndDelete({ _id: id });
+    return isDeleted;
+  }
 }

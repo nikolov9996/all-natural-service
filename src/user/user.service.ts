@@ -34,7 +34,6 @@ export class UserService {
 
   async deleteUser(userId: ObjectId) {
     const isDeleted = await this.userModel.findByIdAndDelete({ _id: userId });
-
     return isDeleted;
   }
 }

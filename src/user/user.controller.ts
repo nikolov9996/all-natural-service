@@ -14,7 +14,9 @@ import {
 import { UserService } from './user.service';
 import { CreateUserDto, UpdateUserDto } from './user.dto';
 import { ObjectId } from 'mongoose';
+import { httpErrorMessages } from '../utils/httpErrorMessages';
 
+const { errorMessage, notFoundException } = httpErrorMessages;
 @Controller()
 export class UserController {
   constructor(private readonly userService: UserService) {}
@@ -26,12 +28,8 @@ export class UserController {
       return response.status(HttpStatus.CREATED).json({
         User: newUser,
       });
-    } catch (err) {
-      return response.status(HttpStatus.BAD_REQUEST).json({
-        statusCode: 400,
-        message: 'Error: User not created!',
-        error: 'Bad Request',
-      });
+    } catch (error) {
+      errorMessage(response, error.message);
     }
   }
 
@@ -52,22 +50,14 @@ export class UserController {
       const user = await this.userService.getUser(userId);
 
       if (!user) {
-        return response.status(HttpStatus.NOT_FOUND).json({
-          statusCode: 404,
-          message: 'Error: User not found!',
-          error: 'Not Found',
-        });
+        notFoundException(`Error: User ${userId} not found!`);
       }
 
       return response.status(HttpStatus.FOUND).json({
         User: user,
       });
     } catch (error) {
-      return response.status(HttpStatus.BAD_REQUEST).json({
-        statusCode: 400,
-        message: 'Error: Bad Request!',
-        error: 'Bad Request',
-      });
+      errorMessage(response, error.message);
     }
   }
 
@@ -84,18 +74,14 @@ export class UserController {
       );
 
       if (!updatedUser) {
-        throw new NotFoundException(`User #${userId} not found!`);
+        notFoundException(`User #${userId} not found!`);
       }
 
       return response.status(HttpStatus.OK).json({
         User: updatedUser,
       });
     } catch (error) {
-      return response.status(HttpStatus.BAD_REQUEST).json({
-        statusCode: 400,
-        message: 'Error: User not updated!',
-        error: 'Bad Request',
-      });
+      errorMessage(response, error.message);
     }
   }
 
@@ -113,11 +99,7 @@ export class UserController {
         message: 'Deleted successfully',
       });
     } catch (error) {
-      return response.status(HttpStatus.BAD_REQUEST).json({
-        statusCode: 400,
-        message: error.message,
-        error: 'Bad Request',
-      });
+      errorMessage(response, error.message);
     }
   }
 }
