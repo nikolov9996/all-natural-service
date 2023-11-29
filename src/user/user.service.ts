@@ -19,7 +19,10 @@ export class UserService {
   }
 
   async getUser(userId: ObjectId) {
-    const user = await this.userModel.findById(userId).exec();
+    const user = await this.userModel
+      .findById(userId)
+      .populate('favorites')
+      .exec();
     return user;
   }
 
@@ -35,5 +38,9 @@ export class UserService {
   async deleteUser(userId: ObjectId) {
     const isDeleted = await this.userModel.findByIdAndDelete({ _id: userId });
     return isDeleted;
+  }
+
+  async userExist(userId: ObjectId) {
+    return await this.userModel.exists({ _id: userId });
   }
 }

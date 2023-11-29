@@ -10,13 +10,11 @@ import {
 } from 'class-validator';
 
 export class CreateProductDto {
+  // including only fields that will be required
   @IsString()
   @IsNotEmpty()
   @MaxLength(60)
   readonly name;
-
-  @IsArray()
-  readonly tags;
 
   @IsString()
   @IsNotEmpty()
@@ -31,9 +29,6 @@ export class CreateProductDto {
   @IsString()
   readonly creator;
 
-  @IsArray()
-  readonly certificates;
-
   @IsBoolean()
   @IsNotEmpty()
   readonly isNatural;
@@ -45,15 +40,6 @@ export class CreateProductDto {
   @IsString()
   @IsNotEmpty()
   readonly stock;
-
-  @IsArray()
-  readonly likes;
-
-  @IsArray()
-  readonly favorites;
-
-  @IsArray()
-  readonly comments;
 }
 
 export class UpdateProductDto extends PartialType(CreateProductDto) {}

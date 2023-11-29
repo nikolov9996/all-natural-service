@@ -1,5 +1,5 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
-import mongoose, { HydratedDocument, ObjectId } from 'mongoose';
+import mongoose, { HydratedDocument } from 'mongoose';
 import { User } from 'src/user/user.schema';
 
 export type UserDocument = HydratedDocument<Product>;
@@ -18,7 +18,7 @@ export class Product {
   @Prop()
   photos: string[];
 
-  @Prop([{ type: mongoose.Schema.Types.ObjectId, ref: User.name }])
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
   creator: User;
 
   @Prop()
@@ -33,11 +33,13 @@ export class Product {
   @Prop()
   stock: string;
 
-  @Prop()
-  likes: ObjectId[];
-
-  @Prop()
-  favorites: ObjectId[];
+  @Prop([
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+    },
+  ])
+  favorites: User[];
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);

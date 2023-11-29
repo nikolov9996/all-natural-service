@@ -3,10 +3,15 @@ import { CreateProductDto } from './product.dto';
 import { Model, ObjectId } from 'mongoose';
 import { IProduct } from './products.interface';
 import { InjectModel } from '@nestjs/mongoose';
+import { IUser } from 'src/user/user.interface';
 
 @Injectable()
 export class ProductService {
-  constructor(@InjectModel('Product') private productModel: Model<IProduct>) {}
+  constructor(
+    @InjectModel('Product') private productModel: Model<IProduct>,
+    @InjectModel('User') private userModel: Model<IUser>,
+  ) {}
+
   async createProduct(createProductDto: CreateProductDto) {
     const newProduct = await new this.productModel(createProductDto);
     return newProduct.save();
@@ -32,5 +37,37 @@ export class ProductService {
   async deleteProduct(id: ObjectId) {
     const isDeleted = await this.productModel.findByIdAndDelete({ _id: id });
     return isDeleted;
+  }
+
+  async favoriteProduct(id: ObjectId, userId: ObjectId) {
+    const product = await this.productModel.findByIdAndUpdate(
+      id,
+      { $addToSet: { favorites: userId } },
+      { new: true },
+    );
+
+    await this.userModel.findByIdAndUpdate(userId, {
+      $addToSet: { favorites: id },
+    });
+
+    return product;
+  }
+
+  async unFavoriteProduct(id: ObjectId, userId: ObjectId) {
+    const product = await this.productModel.findByIdAndUpdate(
+      id,
+      { $pull: { favorites: userId } },
+      { new: true },
+    );
+
+    await this.userModel.findByIdAndUpdate(userId, {
+      $pull: { favorites: id },
+    });
+
+    return product;
+  }
+
+  async productExist(productId: ObjectId) {
+    return await this.productModel.exists({ _id: productId });
   }
 }

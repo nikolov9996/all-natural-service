@@ -1,4 +1,4 @@
-import { Document } from 'mongoose';
+import { Document, ObjectId } from 'mongoose';
 
 export interface IUser extends Document {
   readonly username: string;
@@ -6,4 +6,5 @@ export interface IUser extends Document {
   readonly avatar: string;
   readonly isSeller: boolean;
   readonly password: string;
+  readonly favorites: ObjectId[];
 }

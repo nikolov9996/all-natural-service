@@ -8,16 +8,21 @@ import {
   Param,
   Query,
   Delete,
+  Patch,
 } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { CreateProductDto } from './product.dto';
-import { ObjectId } from 'mongoose';
+import { ObjectId, isValidObjectId } from 'mongoose';
 import { httpErrorMessages } from '../utils/httpErrorMessages';
+import { UserService } from 'src/user/user.service';
 
 const { errorMessage, notFoundException } = httpErrorMessages;
 @Controller()
 export class ProductController {
-  constructor(private readonly productService: ProductService) {}
+  constructor(
+    private readonly productService: ProductService,
+    private readonly userService: UserService,
+  ) {}
 
   @Post()
   async createProduct(
@@ -25,6 +30,13 @@ export class ProductController {
     @Body() createProductDto: CreateProductDto,
   ) {
     try {
+      const userExist = await this.userService.userExist(
+        createProductDto.creator,
+      );
+
+      if (!userExist) {
+        notFoundException(`User ${createProductDto.creator} not found`);
+      }
       const product = await this.productService.createProduct(createProductDto);
       return response.status(HttpStatus.CREATED).json({
         Product: product,
@@ -83,6 +95,70 @@ export class ProductController {
       return response.status(HttpStatus.OK).json({
         deleted,
         message: 'Deleted successfully',
+      });
+    } catch (error) {
+      errorMessage(response, error.message);
+    }
+  }
+
+  @Patch(':id/favorite/:userId')
+  async favoriteProduct(
+    @Res() response,
+    @Param('id') id: ObjectId,
+    @Param('userId') userId: ObjectId,
+  ) {
+    try {
+      if (!isValidObjectId(id) || !isValidObjectId(userId)) {
+        errorMessage(response, 'UserID or ProductID invalid');
+      }
+
+      const userExist = await this.userService.userExist(userId);
+      const productExist = await this.productService.productExist(id);
+
+      if (!userExist) {
+        notFoundException(`User ${id} not found`);
+      }
+
+      if (!productExist) {
+        notFoundException(`Product ${id} not found`);
+      }
+
+      const product = await this.productService.favoriteProduct(id, userId);
+
+      return response.status(HttpStatus.OK).json({
+        Product: product,
+      });
+    } catch (error) {
+      errorMessage(response, error.message);
+    }
+  }
+
+  @Patch(':id/un-favorite/:userId')
+  async unFavoriteProduct(
+    @Res() response,
+    @Param('id') id: ObjectId,
+    @Param('userId') userId: ObjectId,
+  ) {
+    try {
+      if (!isValidObjectId(id) || !isValidObjectId(userId)) {
+        errorMessage(response, 'UserID or ProductID invalid');
+      }
+
+      const productExist = await this.productService.productExist(id);
+      const userExist = await this.userService.userExist(userId);
+
+      if (!userExist) {
+        notFoundException(`User ${id} not found`);
+      }
+
+      if (!productExist) {
+        notFoundException(`Product ${id} not found`);
+      }
+
+      const product = await this.productService.unFavoriteProduct(id, userId);
+
+      return response.status(HttpStatus.OK).json({
+        Product: product,
       });
     } catch (error) {
       errorMessage(response, error.message);
