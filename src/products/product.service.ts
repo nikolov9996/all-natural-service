@@ -67,6 +67,13 @@ export class ProductService {
     return product;
   }
 
+  async removeDeletedUser(userId: ObjectId) {
+    return await this.productModel.updateMany(
+      { favorites: userId },
+      { $pull: { favorites: userId } },
+    );
+  }
+
   async productExist(productId: ObjectId) {
     return await this.productModel.exists({ _id: productId });
   }

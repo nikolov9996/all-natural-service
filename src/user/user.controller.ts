@@ -15,11 +15,15 @@ import { UserService } from './user.service';
 import { CreateUserDto, UpdateUserDto } from './user.dto';
 import { ObjectId } from 'mongoose';
 import { httpErrorMessages } from '../utils/httpErrorMessages';
+import { ProductService } from 'src/products/product.service';
 
 const { errorMessage, notFoundException } = httpErrorMessages;
 @Controller()
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly productService: ProductService,
+  ) {}
 
   @Post()
   async createUser(@Res() response, @Body() createUserDto: CreateUserDto) {
@@ -93,6 +97,8 @@ export class UserController {
       if (!deleted) {
         throw new NotFoundException(`User #${userId} not found!`);
       }
+
+      await this.productService.removeDeletedUser(userId);
 
       return response.status(HttpStatus.OK).json({
         deleted,

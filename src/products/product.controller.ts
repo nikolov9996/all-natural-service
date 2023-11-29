@@ -91,6 +91,8 @@ export class ProductController {
       if (!deleted) {
         notFoundException(`Error: Product ${productId} not found!`);
       }
+      // removing product ID from all users that have it in favorites
+      await this.userService.removeDeletedProduct(productId);
 
       return response.status(HttpStatus.OK).json({
         deleted,

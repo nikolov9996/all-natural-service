@@ -3,10 +3,14 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, ObjectId } from 'mongoose';
 import { IUser } from './user.interface';
 import { CreateUserDto, UpdateUserDto } from './user.dto';
+import { IProduct } from 'src/products/products.interface';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel('User') private userModel: Model<IUser>) {}
+  constructor(
+    @InjectModel('User') private userModel: Model<IUser>,
+    @InjectModel('Product') private productModel: Model<IProduct>,
+  ) {}
 
   async createUser(createUserDto: CreateUserDto): Promise<IUser> {
     const newStudent = await new this.userModel(createUserDto);
@@ -42,5 +46,12 @@ export class UserService {
 
   async userExist(userId: ObjectId) {
     return await this.userModel.exists({ _id: userId });
+  }
+
+  async removeDeletedProduct(productId: ObjectId) {
+    return await this.userModel.updateMany(
+      { favorites: productId },
+      { $pull: { favorites: productId } },
+    );
   }
 }
