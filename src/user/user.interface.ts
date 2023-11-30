@@ -7,4 +7,5 @@ export interface IUser extends Document {
   readonly isSeller: boolean;
   readonly password: string;
   readonly favorites: ObjectId[];
+  readonly comments: ObjectId[];
 }

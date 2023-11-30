@@ -7,11 +7,13 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
 import { RouterModule } from '@nestjs/core';
 import { ProductModule } from 'src/products/products.module';
+import { CommentsModule } from 'src/comments/comments.module';
 
 const routes = [
   { path: 'user', module: UserModule },
   { path: 'product', module: ProductModule },
   { path: 'catalog', module: CatalogModule },
+  { path: 'comments', module: CommentsModule },
 ];
 
 @Module({
@@ -20,6 +22,7 @@ const routes = [
     UserModule,
     CatalogModule,
     ProductModule,
+    CommentsModule,
     RouterModule.register(routes),
     MongooseModule.forRoot(process.env.DB_URL, {
       dbName: 'all-natural',
