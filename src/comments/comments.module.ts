@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Mongoose } from 'mongoose';
 import { ProductSchema } from 'src/products/product.model';
 import { ProductModule } from 'src/products/products.module';
 import { UserSchema } from 'src/user/user.model';

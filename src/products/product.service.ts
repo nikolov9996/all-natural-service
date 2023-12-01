@@ -21,6 +21,7 @@ export class ProductService {
     const product = await this.productModel
       .findById(productId)
       .populate('creator')
+      .populate('comments')
       .exec();
     return product;
   }

@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
+import { Comment } from 'src/comments/comments.model';
 import { Product } from 'src/products/product.model';
 
 export type UserDocument = HydratedDocument<User>;
@@ -22,6 +23,14 @@ export class User {
     },
   ])
   favorites: Product[];
+
+  @Prop([
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Comment',
+    },
+  ])
+  comments: Comment[];
 
   @Prop()
   isSeller: boolean;

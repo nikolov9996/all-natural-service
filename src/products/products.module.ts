@@ -5,6 +5,7 @@ import { ProductService } from './product.service';
 import { ProductController } from './product.controller';
 import { UserModule } from 'src/user/user.module';
 import { UserSchema } from 'src/user/user.model';
+import { CommentSchema } from 'src/comments/comments.model';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { UserSchema } from 'src/user/user.model';
     MongooseModule.forFeature([
       { name: 'Product', schema: ProductSchema },
       { name: 'User', schema: UserSchema },
+      { name: 'Comment', schema: CommentSchema },
     ]),
   ],
   controllers: [ProductController],
