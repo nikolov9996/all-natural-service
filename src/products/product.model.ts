@@ -5,7 +5,7 @@ import { User } from 'src/user/user.model';
 
 export type UserDocument = HydratedDocument<Product>;
 
-@Schema()
+@Schema({ timestamps: true })
 export class Product {
   @Prop()
   name: string;

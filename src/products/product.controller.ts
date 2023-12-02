@@ -8,10 +8,11 @@ import {
   Param,
   Query,
   Delete,
+  Put,
   Patch,
 } from '@nestjs/common';
 import { ProductService } from './product.service';
-import { CreateProductDto } from './product.dto';
+import { CreateProductDto, UpdateProductDto } from './product.dto';
 import { ObjectId, isValidObjectId } from 'mongoose';
 import { httpErrorMessages } from '../utils/httpErrorMessages';
 import { UserService } from 'src/user/user.service';
@@ -41,6 +42,30 @@ export class ProductController {
       return response.status(HttpStatus.CREATED).json({
         Product: product,
       });
+    } catch (error) {
+      errorMessage(response, error.message);
+    }
+  }
+
+  @Put(':id')
+  async updateProduct(
+    @Res() response,
+    @Param('id') productId: ObjectId,
+    @Body() updateProductDto: UpdateProductDto,
+  ) {
+    try {
+      const productExist = await this.productService.productExist(productId);
+
+      if (!productExist) {
+        notFoundException(`Product ${productId} not found!`);
+      }
+
+      const updatedProduct = await this.productService.updateProduct(
+        productId,
+        updateProductDto,
+      );
+
+      return response.status(HttpStatus.OK).json(updatedProduct);
     } catch (error) {
       errorMessage(response, error.message);
     }

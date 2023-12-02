@@ -4,7 +4,7 @@ import { Document, Types } from 'mongoose';
 import { Product } from 'src/products/product.model';
 import { User } from 'src/user/user.model';
 
-@Schema()
+@Schema({ timestamps: true })
 export class Comment extends Document {
   @Prop({ type: Types.ObjectId, ref: 'User', required: true })
   user: User;

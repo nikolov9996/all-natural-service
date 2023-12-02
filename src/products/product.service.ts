@@ -75,6 +75,15 @@ export class ProductService {
     );
   }
 
+  async updateProduct(productId, product) {
+    const updatedProduct = await this.productModel.findByIdAndUpdate(
+      productId,
+      product,
+      { new: true },
+    );
+    return updatedProduct;
+  }
+
   async productExist(productId: ObjectId) {
     return await this.productModel.exists({ _id: productId });
   }
