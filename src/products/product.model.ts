@@ -49,6 +49,16 @@ export class Product {
     },
   ])
   comments: Comment[];
+
+  @Prop({
+    type: [
+      {
+        userId: { type: mongoose.Schema.Types.ObjectId },
+        rating: { type: Number },
+      },
+    ],
+  })
+  rating: { userId: User; rating: number };
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);

@@ -84,6 +84,28 @@ export class ProductService {
     return updatedProduct;
   }
 
+  async rateProduct(productId: ObjectId, userId: ObjectId, rating: number) {
+    const product = await this.productModel.findById(productId).exec();
+    // If rating already exist for this user it is overwritten :)
+    const ratingExist = product.rating?.find(
+      (rating) => rating.userId.toString() === userId.toString(),
+    );
+
+    if (ratingExist) {
+      product.rating.map((rat) => {
+        if (rat.userId.toString() === userId.toString()) {
+          rat.rating = rating;
+        }
+
+        return rat;
+      });
+    }
+
+    await product.save();
+
+    return product;
+  }
+
   async productExist(productId: ObjectId) {
     return await this.productModel.exists({ _id: productId });
   }

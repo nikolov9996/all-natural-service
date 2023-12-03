@@ -1,5 +1,9 @@
 import { Document, ObjectId } from 'mongoose';
 
+export interface Rating {
+  userId: ObjectId;
+  rating: number;
+}
 export interface IProduct extends Document {
   readonly name: string;
   readonly tags: string;
@@ -12,4 +16,5 @@ export interface IProduct extends Document {
   readonly isNatural: boolean;
   readonly favorites: ObjectId[];
   readonly comments: ObjectId[];
+  readonly rating: Rating[];
 }

@@ -191,4 +191,28 @@ export class ProductController {
       errorMessage(response, error.message);
     }
   }
+
+  @Patch(':productId/:userId/:rating')
+  async rateProduct(
+    @Res() response,
+    @Param('productId') productId: ObjectId,
+    @Param('userId') userId: ObjectId,
+    @Param('rating') rating: number,
+  ) {
+    try {
+      const product = await this.productService.rateProduct(
+        productId,
+        userId,
+        rating,
+      );
+
+      if (!rating) {
+        notFoundException(`Product ${productId} not found!`);
+      }
+
+      return response.status(HttpStatus.OK).json(product);
+    } catch (error) {
+      errorMessage(response, error.message);
+    }
+  }
 }
