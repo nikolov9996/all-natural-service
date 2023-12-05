@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ProductSchema } from 'src/products/product.model';
 import { ProductModule } from 'src/products/products.module';
@@ -10,8 +10,8 @@ import { CommentSchema } from './comments.model';
 
 @Module({
   imports: [
-    UserModule,
-    ProductModule,
+    forwardRef(() => UserModule),
+    forwardRef(() => ProductModule),
     MongooseModule.forFeature([
       { name: 'User', schema: UserSchema },
       { name: 'Product', schema: ProductSchema },

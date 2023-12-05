@@ -16,6 +16,7 @@ import { CreateProductDto, UpdateProductDto } from './product.dto';
 import { ObjectId, isValidObjectId } from 'mongoose';
 import { httpErrorMessages } from '../utils/httpErrorMessages';
 import { UserService } from 'src/user/user.service';
+import { CommentsService } from 'src/comments/comments.service';
 
 const { errorMessage, notFoundException } = httpErrorMessages;
 @Controller()
@@ -23,6 +24,7 @@ export class ProductController {
   constructor(
     private readonly productService: ProductService,
     private readonly userService: UserService,
+    private readonly commentService: CommentsService,
   ) {}
 
   @Post()
@@ -115,6 +117,14 @@ export class ProductController {
 
       if (!deleted) {
         notFoundException(`Error: Product ${productId} not found!`);
+      }
+
+      if (deleted.comments.length) {
+        const promises = deleted.comments.map(async (id) => {
+          await this.commentService.deleteComment(id);
+        });
+
+        await Promise.all(promises);
       }
       // removing product ID from all users that have it in favorites
       await this.userService.removeDeletedProduct(productId);

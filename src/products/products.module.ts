@@ -6,10 +6,12 @@ import { UserModule } from 'src/user/user.module';
 import { UserSchema } from 'src/user/user.model';
 import { CommentSchema } from 'src/comments/comments.model';
 import { ProductSchema } from './product.model';
+import { CommentsModule } from 'src/comments/comments.module';
 
 @Module({
   imports: [
     forwardRef(() => UserModule),
+    forwardRef(() => CommentsModule),
     MongooseModule.forFeature([
       { name: 'Product', schema: ProductSchema },
       { name: 'User', schema: UserSchema },

@@ -16,6 +16,7 @@ import { CreateUserDto, UpdateUserDto } from './user.dto';
 import { ObjectId } from 'mongoose';
 import { httpErrorMessages } from '../utils/httpErrorMessages';
 import { ProductService } from 'src/products/product.service';
+import { CommentsService } from 'src/comments/comments.service';
 
 const { errorMessage, notFoundException } = httpErrorMessages;
 @Controller()
@@ -23,6 +24,7 @@ export class UserController {
   constructor(
     private readonly userService: UserService,
     private readonly productService: ProductService,
+    private readonly commentService: CommentsService,
   ) {}
 
   @Post()
@@ -96,6 +98,14 @@ export class UserController {
 
       if (!deleted) {
         throw new NotFoundException(`User #${userId} not found!`);
+      }
+
+      if (deleted.comments.length) {
+        const promises = deleted.comments.map(async (id) => {
+          await this.commentService.deleteComment(id);
+        });
+
+        await Promise.all(promises);
       }
 
       await this.productService.removeDeletedUser(userId);
