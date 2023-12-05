@@ -17,6 +17,25 @@ export class ProductService {
     return newProduct.save();
   }
 
+  async getAverageRating(productId: ObjectId): Promise<number> {
+    const result = await this.productModel
+      .aggregate([
+        { $match: { _id: productId } },
+        {
+          $project: {
+            averageRating: {
+              $avg: '$rating.rating',
+            },
+          },
+        },
+      ])
+      .exec();
+
+    const averageRating = result.length > 0 ? result[0].averageRating : 0;
+
+    return averageRating;
+  }
+
   async getProduct(productId: ObjectId) {
     const product = await this.productModel
       .findById(productId)
@@ -103,7 +122,21 @@ export class ProductService {
 
     await product.save();
 
-    return product;
+    const avgRating = product.rating.reduce((acc, cVal) => {
+      return (acc += cVal.rating);
+    }, 0);
+
+    const ratedProduct = await this.productModel // updating average rating
+      .findByIdAndUpdate(
+        productId,
+        {
+          $set: { avgRating: avgRating },
+        },
+        { new: true },
+      )
+      .exec();
+
+    return ratedProduct;
   }
 
   async productExist(productId: ObjectId) {

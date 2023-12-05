@@ -17,4 +17,5 @@ export interface IProduct extends Document {
   readonly favorites: ObjectId[];
   readonly comments: ObjectId[];
   readonly rating: Rating[];
+  readonly avgRating: number;
 }

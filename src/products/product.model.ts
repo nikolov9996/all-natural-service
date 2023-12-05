@@ -59,6 +59,9 @@ export class Product {
     ],
   })
   rating: { userId: User; rating: number };
+
+  @Prop()
+  avgRating: number;
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);
