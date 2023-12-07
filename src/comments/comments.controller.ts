@@ -13,13 +13,9 @@ import { UserService } from 'src/user/user.service';
 import { CommentsService } from './comments.service';
 import { ObjectId } from 'mongoose';
 import { httpErrorMessages } from 'src/utils/httpErrorMessages';
+import { CreateCommentDto, UpdateCommentDto } from './comments.dto';
 
 const { errorMessage, notFoundException } = httpErrorMessages;
-
-export interface CommentBody {
-  content: string;
-  images: string[];
-}
 
 @Controller()
 export class CommentsController {
@@ -34,7 +30,7 @@ export class CommentsController {
     @Res() response,
     @Param('userId') userId: ObjectId,
     @Param('productId') productId: ObjectId,
-    @Body() body: CommentBody,
+    @Body() body: CreateCommentDto,
   ) {
     try {
       const user = await this.userService.getUser(userId);
@@ -71,7 +67,7 @@ export class CommentsController {
   async updateComment(
     @Res() response,
     @Param('id') commentId: ObjectId,
-    @Body() newBody: CommentBody,
+    @Body() newBody: UpdateCommentDto,
   ) {
     try {
       const updatedComment = await this.commentsService.updateComment(
