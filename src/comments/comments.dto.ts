@@ -1,4 +1,5 @@
-import { IsString, IsNotEmpty, MaxLength } from 'class-validator';
+import { PartialType } from '@nestjs/mapped-types';
+import { IsString, IsNotEmpty, MaxLength, IsArray } from 'class-validator';
 
 export class CreateCommentDto {
   @IsString()
@@ -13,4 +14,9 @@ export class CreateCommentDto {
   @IsNotEmpty()
   @MaxLength(500)
   readonly content;
+
+  @IsArray()
+  readonly images;
 }
+
+export class UpdateCommentDto extends PartialType(CreateCommentDto) {}

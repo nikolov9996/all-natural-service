@@ -4,7 +4,7 @@ import { Model, ObjectId } from 'mongoose';
 import { IUser } from 'src/user/user.interface';
 import { IComment } from './comments.interface';
 import { IProduct } from 'src/products/products.interface';
-import { CommentBody } from './comments.controller';
+import { UpdateCommentDto } from './comments.dto';
 
 @Injectable()
 export class CommentsService {
@@ -30,7 +30,7 @@ export class CommentsService {
     return product.save();
   }
 
-  async updateComment(commentId: ObjectId, body: CommentBody) {
+  async updateComment(commentId: ObjectId, body: UpdateCommentDto) {
     const updatedComment = await this.commentsModel
       .findByIdAndUpdate(commentId, body, {
         new: true,
