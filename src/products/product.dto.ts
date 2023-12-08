@@ -40,6 +40,10 @@ export class CreateProductDto {
   @IsString()
   @IsNotEmpty()
   readonly stock;
+
+  @IsString()
+  @IsNotEmpty()
+  readonly category;
 }
 
 export class UpdateProductDto extends PartialType(CreateProductDto) {}

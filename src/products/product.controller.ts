@@ -93,6 +93,16 @@ export class ProductController {
     }
   }
 
+  @Get('/categories')
+  async getCategories(@Res() response) {
+    try {
+      const categories = await this.productService.getCategories();
+      return response.status(HttpStatus.OK).json(categories);
+    } catch (error) {
+      errorMessage(response, error.message);
+    }
+  }
+
   @Get(':id')
   async getProduct(@Res() response, @Param('id') productId: ObjectId) {
     try {

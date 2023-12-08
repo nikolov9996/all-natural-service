@@ -4,6 +4,7 @@ import { Model, ObjectId } from 'mongoose';
 import { IProduct } from './products.interface';
 import { InjectModel } from '@nestjs/mongoose';
 import { IUser } from 'src/user/user.interface';
+import { CATEGORY } from './product.static';
 
 @Injectable()
 export class ProductService {
@@ -137,6 +138,10 @@ export class ProductService {
       .exec();
 
     return ratedProduct;
+  }
+
+  async getCategories() {
+    return Object.keys(CATEGORY).filter((value) => isNaN(Number(value)));
   }
 
   async productExist(productId: ObjectId) {

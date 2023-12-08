@@ -1,7 +1,9 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
+import { IsEnum } from 'class-validator';
 import mongoose, { HydratedDocument } from 'mongoose';
 import { Comment } from 'src/comments/comments.model';
 import { User } from 'src/user/user.model';
+import { CATEGORY } from './product.static';
 
 export type UserDocument = HydratedDocument<Product>;
 
@@ -59,6 +61,10 @@ export class Product {
     ],
   })
   rating: { userId: User; rating: number };
+
+  @Prop({ type: String, enum: CATEGORY })
+  @IsEnum(CATEGORY)
+  category: string;
 
   @Prop()
   avgRating: number;
