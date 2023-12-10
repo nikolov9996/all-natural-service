@@ -85,7 +85,7 @@ export class ProductController {
         notFoundException(`Error: Something went wrong!`);
       }
 
-      return response.status(HttpStatus.FOUND).json({
+      return response.status(HttpStatus.OK).json({
         Products: products,
       });
     } catch (error) {
@@ -112,7 +112,7 @@ export class ProductController {
         notFoundException(`Error: Product ${productId} not found!`);
       }
 
-      return response.status(HttpStatus.FOUND).json({
+      return response.status(HttpStatus.OK).json({
         Product: product,
       });
     } catch (error) {

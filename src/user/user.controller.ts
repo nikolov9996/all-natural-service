@@ -59,7 +59,7 @@ export class UserController {
         notFoundException(`Error: User ${userId} not found!`);
       }
 
-      return response.status(HttpStatus.FOUND).json({
+      return response.status(HttpStatus.OK).json({
         User: user,
       });
     } catch (error) {
