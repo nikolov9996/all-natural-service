@@ -13,7 +13,7 @@ export class CreateProductDto {
   // including only fields that will be required
   @IsString()
   @IsNotEmpty()
-  @MaxLength(60)
+  @MaxLength(30)
   readonly name;
 
   @IsString()
