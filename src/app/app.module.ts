@@ -8,6 +8,7 @@ import { RouterModule } from '@nestjs/core';
 import { ProductModule } from 'src/products/products.module';
 import { CommentsModule } from 'src/comments/comments.module';
 import { LoggerMiddleware } from 'src/common/middlewares/logger';
+import { SensorModule } from 'src/sensor/sensor.module';
 
 const routes = [
   { path: 'user', module: UserModule },
@@ -21,6 +22,7 @@ const routes = [
     UserModule,
     ProductModule,
     CommentsModule,
+    SensorModule,
     RouterModule.register(routes),
     MongooseModule.forRoot(process.env.DB_URL, {
       dbName: 'all-natural',
