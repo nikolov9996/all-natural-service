@@ -27,11 +27,12 @@ export class SensorService {
     const results = await this.sensorModel
       .find({
         createdAt: {
-          $gte: new Date(new Date(day)).toISOString(),
+          $gte: new Date(day),
+          $lt: new Date(day).setHours(23,59),
         },
       })
       .sort({ createdAt: 'desc' })
       .exec();
-    return results.reverse()
+    return results.reverse();
   }
 }

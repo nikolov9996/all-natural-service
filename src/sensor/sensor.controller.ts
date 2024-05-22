@@ -54,7 +54,7 @@ export class SensorController {
         skip,
       );
       return response.status(HttpStatus.OK).json({
-        Results: results,
+        Sensor: results,
       });
     } catch (error) {
       return response.status(HttpStatus.BAD_REQUEST);
@@ -69,7 +69,7 @@ export class SensorController {
     try {
       const results = await this.sensorService.getSensorResultForDay(date);
       return response.status(HttpStatus.OK).json({
-        Results: results,
+        Sensor: results,
       });
     } catch (error) {
       return response.status(HttpStatus.BAD_REQUEST);
