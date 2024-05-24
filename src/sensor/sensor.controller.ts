@@ -39,19 +39,19 @@ export class SensorController {
   async getSensorRecords(
     @Res() response,
     @Query('count') count: number,
-    @Query('skip') skip: number,
+    @Query('page') page: number,
   ) {
     if (!count) {
       count = 10;
     }
 
-    if (!skip) {
-      skip = 0;
+    if (!page) {
+      page = 1;
     }
     try {
       const results = await this.sensorService.getManySensorResults(
         count,
-        skip,
+        page,
       );
       return response.status(HttpStatus.OK).json({
         Sensor: results,

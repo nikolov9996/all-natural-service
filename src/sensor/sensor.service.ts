@@ -13,7 +13,9 @@ export class SensorService {
     return newSensorData.save();
   }
 
-  async getManySensorResults(count: number, skip: number) {
+  async getManySensorResults(count: number, page: number) {
+    const skip = count * page ;
+   
     const results = await this.sensorModel
       .find()
       .sort({ createdAt: 'desc' })
@@ -28,7 +30,7 @@ export class SensorService {
       .find({
         createdAt: {
           $gte: new Date(day),
-          $lt: new Date(day).setHours(23,59),
+          $lt: new Date(day).setHours(23, 59),
         },
       })
       .sort({ createdAt: 'desc' })
