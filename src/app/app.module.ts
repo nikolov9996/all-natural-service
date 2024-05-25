@@ -14,6 +14,7 @@ const routes = [
   { path: 'user', module: UserModule },
   { path: 'product', module: ProductModule },
   { path: 'comments', module: CommentsModule },
+  { path: 'sensor', module: SensorModule },
 ];
 
 @Module({

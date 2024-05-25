@@ -13,7 +13,7 @@ import { SensorService } from './sensor.service';
 import { CreateSensorDto } from './sensor.dto';
 
 const { errorMessage } = httpErrorMessages;
-@Controller('/sensor')
+@Controller()
 export class SensorController {
   constructor(private readonly sensorService: SensorService) {}
 
@@ -36,13 +36,43 @@ export class SensorController {
   }
 
   @Get()
-  async getSensorRecords(@Res() response, @Query('count') count: number) {
+  async getSensorRecords(
+    @Res() response,
+    @Query('count') count: number,
+    @Query('page') page: number,
+  ) {
     if (!count) {
       count = 10;
     }
-    const results = await this.sensorService.getManySensorResults(count);
-    return response.status(HttpStatus.OK).json({
-      Results: results,
-    });
+
+    if (!page) {
+      page = 1;
+    }
+    try {
+      const results = await this.sensorService.getManySensorResults(
+        count,
+        page,
+      );
+      return response.status(HttpStatus.OK).json({
+        Sensor: results,
+      });
+    } catch (error) {
+      return response.status(HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  @Get('/day')
+  async getSensorRecordForDay(@Res() response, @Query('date') date: string) {
+    if (!date) {
+      date = new Date().toISOString();
+    }
+    try {
+      const results = await this.sensorService.getSensorResultForDay(date);
+      return response.status(HttpStatus.OK).json({
+        Sensor: results,
+      });
+    } catch (error) {
+      return response.status(HttpStatus.BAD_REQUEST);
+    }
   }
 }

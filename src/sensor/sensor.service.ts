@@ -13,8 +13,28 @@ export class SensorService {
     return newSensorData.save();
   }
 
-  async getManySensorResults(count: number) {
-    const results = await this.sensorModel.find({}).limit(count);
-    return results;
+  async getManySensorResults(count: number, page: number) {
+    const skip = count * page ;
+   
+    const results = await this.sensorModel
+      .find()
+      .sort({ createdAt: 'desc' })
+      .limit(count)
+      .skip(skip)
+      .exec();
+    return results.reverse();
+  }
+
+  async getSensorResultForDay(day: string) {
+    const results = await this.sensorModel
+      .find({
+        createdAt: {
+          $gte: new Date(day),
+          $lt: new Date(day).setHours(23, 59),
+        },
+      })
+      .sort({ createdAt: 'desc' })
+      .exec();
+    return results.reverse();
   }
 }
