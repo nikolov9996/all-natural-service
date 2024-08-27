@@ -7,10 +7,17 @@ import { ProductModule } from 'src/products/products.module';
 import { ProductSchema } from 'src/products/product.model';
 import { CommentSchema } from 'src/comments/comments.model';
 import { CommentsModule } from 'src/comments/comments.module';
+import { JwtModule } from '@nestjs/jwt';
+import { config } from 'src/config';
 
 @Module({
   imports: [
     ProductModule,
+    JwtModule.register({
+      global: true,
+      secret: config.jwt_secret,
+      signOptions: { expiresIn: '60s' },
+    }),
     forwardRef(() => CommentsModule),
     MongooseModule.forFeature([
       { name: 'User', schema: UserSchema },

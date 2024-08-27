@@ -13,9 +13,14 @@ export class UserService {
     return newStudent.save();
   }
 
-  async getManyUsers(count: number) {
+  async getManyUsers(count: number): Promise<IUser[]> {
     const users = await this.userModel.find({}).limit(count);
     return users;
+  }
+
+  async getUserByUsername(username: string): Promise<IUser> {
+    const user: IUser = await this.userModel.findOne({ username });
+    return user;
   }
 
   async getUser(userId: ObjectId) {

@@ -30,4 +30,16 @@ export class CreateUserDto {
   readonly password: string;
 }
 
+export class LoginUserDto {
+  @IsString()
+  @MaxLength(30)
+  @IsNotEmpty()
+  readonly username: string;
+
+  @IsString()
+  @MaxLength(200)
+  @IsNotEmpty()
+  readonly password: string;
+}
+
 export class UpdateUserDto extends PartialType(CreateUserDto) {}
