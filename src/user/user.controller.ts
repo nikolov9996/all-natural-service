@@ -18,7 +18,6 @@ import { httpErrorMessages } from '../utils/httpErrorMessages';
 import { ProductService } from 'src/products/product.service';
 import { CommentsService } from 'src/comments/comments.service';
 import { JwtService } from '@nestjs/jwt';
-import { IUser } from './user.interface';
 import { log } from 'console';
 
 const { errorMessage, notFoundException } = httpErrorMessages;
@@ -35,7 +34,7 @@ export class UserController {
   async loginUser(
     @Res() response,
     @Body() loginUserDto: LoginUserDto,
-  ): Promise<{ access_token: string }> {
+  ): Promise<{ token: string }> {
     try {
       const user = await this.userService.getUserByUsername(
         loginUserDto.username,
@@ -47,9 +46,9 @@ export class UserController {
         );
       }
 
-      return response.status(HttpStatus.FOUND).json({
+      return response.status(HttpStatus.OK).json({
         user: user,
-        auth_token: await this.jwtService.signAsync({
+        token: await this.jwtService.signAsync({
           username: user.username,
           email: user.email,
           avatar: user.avatar,
