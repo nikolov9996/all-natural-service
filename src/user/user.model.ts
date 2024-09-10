@@ -35,7 +35,7 @@ export class User {
   @Prop()
   isSeller: boolean;
 
-  @Prop()
+  @Prop({select:false})
   password: string;
 }
 
