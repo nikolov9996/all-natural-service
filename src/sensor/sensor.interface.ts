@@ -5,4 +5,4 @@ export interface ISensor extends Document {
   readonly humidity: string;
   readonly time: string;
 }
-``
+``;

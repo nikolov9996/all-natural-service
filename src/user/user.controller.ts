@@ -19,6 +19,7 @@ import { ProductService } from 'src/products/product.service';
 import { CommentsService } from 'src/comments/comments.service';
 import { JwtService } from '@nestjs/jwt';
 import { log } from 'console';
+import { compare } from 'bcrypt';
 
 const { errorMessage, notFoundException } = httpErrorMessages;
 @Controller()
@@ -34,7 +35,7 @@ export class UserController {
   async loginUser(
     @Res() response,
     @Body() loginUserDto: LoginUserDto,
-  ): Promise<{ token: string }> {
+  ): Promise<{ token?: string; error?: string }> {
     try {
       const user = await this.userService.getUserByUsername(
         loginUserDto.username,
@@ -44,10 +45,16 @@ export class UserController {
         notFoundException(
           `Error: User with username: '${loginUserDto.username}' not found!`,
         );
+      } else {
+        const isMatch = await compare(loginUserDto.password, user.password);
+        if (!isMatch) {
+          return response.status(HttpStatus.UNAUTHORIZED).json({
+            error: 'Wrong password',
+          });
+        }
       }
 
       return response.status(HttpStatus.OK).json({
-        user: user,
         token: await this.jwtService.signAsync({
           username: user.username,
           email: user.email,
