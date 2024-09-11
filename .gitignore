@@ -1,4 +1,5 @@
 # compiled output
+/etc/secrets
 /dist
 /node_modules
 .env
