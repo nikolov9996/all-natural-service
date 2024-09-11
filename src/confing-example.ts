@@ -1,4 +1,3 @@
 export const config = {
-    jwt_secret: '',
-  };
-  
+  jwt_secret: '',
+};

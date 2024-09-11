@@ -8,7 +8,7 @@ import { ProductSchema } from 'src/products/product.model';
 import { CommentSchema } from 'src/comments/comments.model';
 import { CommentsModule } from 'src/comments/comments.module';
 import { JwtModule } from '@nestjs/jwt';
-import { config } from 'src/config';
+import { config } from 'src/etc/secrets/config';
 
 @Module({
   imports: [

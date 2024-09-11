@@ -14,8 +14,8 @@ export class SensorService {
   }
 
   async getManySensorResults(count: number, page: number) {
-    const skip = count * page ;
-   
+    const skip = count * page;
+
     const results = await this.sensorModel
       .find()
       .sort({ createdAt: 'desc' })

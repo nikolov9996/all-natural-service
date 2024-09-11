@@ -10,9 +10,7 @@ import { SensorService } from './sensor.service';
   imports: [
     ProductModule,
     forwardRef(() => CommentsModule),
-    MongooseModule.forFeature([
-      { name: 'Sensor', schema: SensorSchema },
-    ]),
+    MongooseModule.forFeature([{ name: 'Sensor', schema: SensorSchema }]),
   ],
   controllers: [SensorController],
   providers: [SensorService],
