@@ -9,8 +9,10 @@ import { ProductModule } from 'src/products/products.module';
 import { CommentsModule } from 'src/comments/comments.module';
 import { LoggerMiddleware } from 'src/common/middlewares/logger';
 import { SensorModule } from 'src/sensor/sensor.module';
+import { AuthModule } from 'src/auth/auth.module';
 
 const routes = [
+  { path: 'auth', module: AuthModule },
   { path: 'user', module: UserModule },
   { path: 'product', module: ProductModule },
   { path: 'comments', module: CommentsModule },
@@ -20,6 +22,7 @@ const routes = [
 @Module({
   imports: [
     ConfigModule.forRoot(),
+    AuthModule,
     UserModule,
     ProductModule,
     CommentsModule,
