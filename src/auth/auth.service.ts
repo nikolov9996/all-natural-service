@@ -1,10 +1,28 @@
-import { Injectable } from '@nestjs/common';
+import {
+  Body,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+  Post,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { compare } from 'bcrypt';
+import { IUser } from 'src/user/user.interface';
 import { UserService } from 'src/user/user.service';
+import { LocalAuthGuard } from './local-auth.guard';
+import { LoginUserDto } from 'src/user/user.dto';
+import { httpErrorMessages } from 'src/utils/httpErrorMessages';
+import { log } from 'console';
 
+const { errorMessage, notFoundException } = httpErrorMessages;
 @Injectable()
 export class AuthService {
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private readonly jwtService: JwtService,
+  ) {}
 
   async validateUser(
     username: string,
@@ -22,5 +40,19 @@ export class AuthService {
     }
 
     return null;
+  }
+
+  async login(user: IUser) {
+    const payload = {
+      username: user.username,
+      email: user.email,
+      avatar: user.avatar,
+      isSeller: user.isSeller,
+      userId: user._id,
+    };
+
+    return {
+      access_token: this.jwtService.sign(payload),
+    };
   }
 }
