@@ -10,10 +10,9 @@ import {
   NotFoundException,
   Delete,
   Query,
-  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto, LoginUserDto, UpdateUserDto } from './user.dto';
+import { CreateUserDto, UpdateUserDto } from './user.dto';
 import { ObjectId } from 'mongoose';
 import { httpErrorMessages } from '../utils/httpErrorMessages';
 import { ProductService } from 'src/products/product.service';
