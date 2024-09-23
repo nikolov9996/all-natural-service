@@ -4,6 +4,7 @@ import {
   HttpStatus,
   Post,
   Res,
+  UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
 import { LocalAuthGuard } from './local-auth.guard';
@@ -13,6 +14,7 @@ import { compare } from 'bcrypt';
 import { UserService } from 'src/user/user.service';
 import { AuthService } from './auth.service';
 import { log } from 'console';
+import { RefreshAuthGuard } from './guard/refresh-auth.guard';
 
 const { errorMessage, notFoundException } = httpErrorMessages;
 
@@ -54,5 +56,23 @@ export class AuthController {
       log(error.message);
       errorMessage(response, 'Something went wrong while authenticating');
     }
+  }
+
+  @UseGuards(RefreshAuthGuard)
+  @Post('refresh-token')
+  async refreshToken(@Body() body, @Res() response) {
+    // If userId is missing from request all ways the response will be 401!
+    if (!body.userId) {
+      throw new UnauthorizedException('userId is required!');
+    }
+    const resp = await this.authService.refreshToken(body.userId);
+
+    if (!resp) {
+      throw new UnauthorizedException('userId is invalid!');
+    }
+
+    return response.status(HttpStatus.OK).json({
+      resp,
+    });
   }
 }

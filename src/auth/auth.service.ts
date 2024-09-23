@@ -2,9 +2,11 @@ import { Inject, Injectable } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { compare } from 'bcrypt';
+import { ObjectId } from 'mongoose';
 import refreshJwtConfig from 'src/config/refresh-jwt.config';
 import { IUser } from 'src/user/user.interface';
 import { UserService } from 'src/user/user.service';
+
 @Injectable()
 export class AuthService {
   constructor(
@@ -47,5 +49,17 @@ export class AuthService {
         this.refreshTokenConfig,
       ),
     };
+  }
+
+  async refreshToken(userId: ObjectId) {
+    const user = await this.userService.getUser(userId);
+
+    if (!user) {
+      return undefined;
+    }
+
+    const resp = await this.login(user);
+
+    return resp;
   }
 }
