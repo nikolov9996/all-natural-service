@@ -31,7 +31,8 @@ export class UserService {
   async getUser(userId: ObjectId) {
     const user = await this.userModel
       .findById(userId)
-      .populate('favorites')
+      // .populate('favorites')
+      // .populate('comments')
       .exec();
     return user;
   }

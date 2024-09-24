@@ -10,6 +10,7 @@ import {
   NotFoundException,
   Delete,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto, UpdateUserDto } from './user.dto';
@@ -17,6 +18,7 @@ import { ObjectId } from 'mongoose';
 import { httpErrorMessages } from '../utils/httpErrorMessages';
 import { ProductService } from 'src/products/product.service';
 import { CommentsService } from 'src/comments/comments.service';
+import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guard';
 
 const { errorMessage, notFoundException } = httpErrorMessages;
 @Controller()
@@ -52,6 +54,24 @@ export class UserController {
 
   @Get(':id')
   async getUser(@Res() response, @Param('id') userId: ObjectId) {
+    try {
+      const user = await this.userService.getUser(userId);
+
+      if (!user) {
+        notFoundException(`Error: User ${userId} not found!`);
+      }
+
+      return response.status(HttpStatus.OK).json({
+        User: user,
+      });
+    } catch (error) {
+      errorMessage(response, error.message);
+    }
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('profile/:id')
+  async getProfile(@Res() response, @Param('id') userId: ObjectId) {
     try {
       const user = await this.userService.getUser(userId);
 
