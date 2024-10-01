@@ -4,12 +4,12 @@ import { UserModule } from 'src/user/user.module';
 import { PassportModule } from '@nestjs/passport';
 import { LocalStrategy } from './local.strategy';
 import { JwtModule } from '@nestjs/jwt';
-import { JwtStrategy } from './jwt.strategy';
+import { JwtStrategy } from './strategies/jwt.strategy';
 import { AuthController } from './auth.controller';
 import jwtConfig from 'src/config/jwt.config';
 import { ConfigModule } from '@nestjs/config';
 import refreshJwtConfig from 'src/config/refresh-jwt.config';
-import { RefreshJwtStrategy } from './refresh.strategy';
+import { RefreshJwtStrategy } from './strategies/refresh.strategy';
 
 @Module({
   imports: [

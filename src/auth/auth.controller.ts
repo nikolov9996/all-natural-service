@@ -7,7 +7,7 @@ import {
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
-import { LocalAuthGuard } from './local-auth.guard';
+import { LocalAuthGuard } from './guard/local-auth.guard';
 import { LoginUserDto } from 'src/user/user.dto';
 import { httpErrorMessages } from 'src/utils/httpErrorMessages';
 import { compare } from 'bcrypt';
