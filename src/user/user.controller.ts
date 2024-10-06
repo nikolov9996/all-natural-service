@@ -73,7 +73,7 @@ export class UserController {
   @Get('profile/:id')
   async getProfile(@Res() response, @Param('id') userId: ObjectId) {
     try {
-      const user = await this.userService.getUser(userId);
+      const user = await this.userService.getUserForFrontend(userId);
 
       if (!user) {
         notFoundException(`Error: User ${userId} not found!`);

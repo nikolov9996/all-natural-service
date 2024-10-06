@@ -34,7 +34,20 @@ export class UserService {
       // .populate('favorites')
       // .populate('comments')
       .exec();
+
     return user;
+  }
+
+  async getUserForFrontend(userId: ObjectId) {
+    const user = await this.userModel
+      .findById(userId)
+      // .populate('favorites')
+      // .populate('comments')
+      .exec();
+
+    const { password, ...rest } = user.toObject();
+
+    return rest;
   }
 
   async updateUser(userId: ObjectId, body: UpdateUserDto) {
