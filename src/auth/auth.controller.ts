@@ -49,8 +49,10 @@ export class AuthController {
         }
       }
 
+      const resp = await this.authService.login(user);
+
       return response.status(HttpStatus.OK).json({
-        token: await this.authService.login(user),
+        ...resp,
       });
     } catch (error) {
       log(error.message);
@@ -72,7 +74,7 @@ export class AuthController {
     }
 
     return response.status(HttpStatus.OK).json({
-      resp,
+      ...resp,
     });
   }
 }
